@@ -1,4 +1,3 @@
-//Prototype inheritance
 const university = {
   universityName: "V.N. Karazin Kharkiv National University",
   dean: "Bakirov",
@@ -23,6 +22,7 @@ faculty.groups;
 //Prototype constructor
 function Shape(color) {
   this.color = color;
+  // this.getArea;
 }
 function Rectangle(color, width, height) {
   Shape.call(this, color);
@@ -33,23 +33,23 @@ function Circle(color, radius) {
   Shape.call(this, color);
   this.radius = radius;
 }
-Rectangle.prototype = Shape.prototype;
+
+Rectangle.prototype = Object.create(Shape.prototype);
 Rectangle.prototype.constructor = Rectangle;
 Rectangle.prototype.getArea = function () {
-  return this.width * this.height;
+  this.area = this.width * this.height;
 };
 
-Circle.prototype = Shape.prototype;
+Circle.prototype = Object.create(Shape.prototype);
 Circle.prototype.constructor = Circle;
 Circle.prototype.getArea = function () {
-  return Math.round(Math.PI * this.radius ** 2);
+  this.area = Math.round(Math.PI * this.radius ** 2);
 };
 
 const myRectangle = new Rectangle("red", 4, 4);
-myRectangle.getArea();
 const myCircle = new Circle("blue", 2);
-console.log(myCircle);
-console.log(myRectangle);
+console.log(myCircle, myCircle.getArea.call(myCircle));
+console.log(myRectangle, myRectangle.getArea.call(myRectangle));
 
 //Fibonacci recursion F n = F n − 1 + F n − 2, n>1
 const fibonacci = function (n) {
