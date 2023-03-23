@@ -23,11 +23,18 @@ class UserService {
       method: "GET",
     })
       .then((res) => {
-        console.log(`${res.status} ${res.url}`);
-        return res.json();
+        if (res.ok) {
+          return res.json();
+        } else {
+          console.error(`Err: ${res.status}`);
+        }
       })
       .then((data) => {
         this.users.push(...data.users);
+      })
+      .catch((err) => {
+        console.error();
+        `Err: ${err}`;
       });
   }
   getUser(id) {
