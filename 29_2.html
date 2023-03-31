@@ -1,0 +1,53 @@
+<!-- Pointer
+
+Add click event listener
+On click create dot shaped element
+Dot element should appear on click place
+
+P.S. Explore event object -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #placeForImage {
+        width: 500px;
+        height: 500px;
+        border: 1px solid black;
+        margin: 0 auto;
+        position: relative;
+      }
+      .pointer {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        border: 1px solid pink;
+        background-color: pink;
+        position: absolute;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="placeForImage"></div>
+  </body>
+  <script>
+    const myDiv = document.getElementById("placeForImage");
+    myDiv.addEventListener("click", (event) => {
+      console.log(event);
+      createElement(event.offsetX, event.offsetY, myDiv);
+    });
+
+    function createElement(x, y, parent) {
+      console.log(x, y, parent);
+      const myElement = document.createElement("div");
+      myElement.style.left = x + "px";
+      myElement.style.top = y + "px";
+      parent.append(myElement);
+      myElement.classList.add("pointer");
+      console.log(myElement);
+    }
+  </script>
+</html>
