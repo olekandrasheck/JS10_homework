@@ -1,0 +1,108 @@
+<!-- Click event
+
+Create ul element and 10 li elements inside
+Add event listener to ul
+Highlight li on click
+If clicked on same li remove highlight
+If clicked on another li add highlight to new li and remove from prev li
+If clicked with ctrl highlight prev li and new li
+if clicked with shift highlight all li from prev li to new li
+
+P.S. This logic should be similar to windows folder select P.P.S. Continue work on project -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      ul {
+        display: block;
+        box-sizing: border-box;
+        border: 1px solid grey;
+        width: 200px;
+        text-align: center;
+        background-color: rgb(244, 244, 130);
+        margin: 0;
+        padding: 0;
+      }
+      li {
+        line-height: 35px;
+        width: 100%;
+        color: grey;
+        list-style-type: none;
+        transition: 0.3s ease;
+      }
+      .active {
+        background-color: yellow;
+      }
+    </style>
+  </head>
+  <body>
+    <ul id="myUl">
+      <li>Music</li>
+      <li>Videos</li>
+      <li>Books</li>
+      <li>Files</li>
+      <li>Fotos</li>
+      <li>Documents</li>
+      <li>Archive</li>
+      <li>Loadings</li>
+      <li>3D-objects</li>
+      <li>Other</li>
+    </ul>
+  </body>
+  <script>
+    const elemUl = document.getElementById("myUl");
+    const listOfLi = [...elemUl.children];
+    let prev;
+    let last;
+    console.log(listOfLi);
+
+    elemUl.addEventListener("click", (event) => {
+      console.log(event);
+
+      prev = last;
+      last = event.target;
+
+      if (event.ctrlKey) {
+        toggleClassName(event.target, "active");
+      } else if (event.shiftKey) {
+        let shiftedList;
+        const prevIndex = listOfLi.findIndex((item) => item === prev);
+        const lastIndex = listOfLi.findIndex((item) => item === last);
+        if (prevIndex > lastIndex) {
+          shiftedList = listOfLi.slice(lastIndex, prevIndex + 1);
+        } else {
+          shiftedList = listOfLi.slice(prevIndex, lastIndex + 1);
+        }
+
+        shiftedList && allElementEnabled(shiftedList, "active");
+      } else {
+        allElementDisable(
+          event.target.parentElement.children,
+          "active",
+          event.target
+        );
+        toggleClassName(event.target, "active");
+      }
+    });
+
+    function allElementDisable(HTMLCollection, className, nodeEl) {
+      [...HTMLCollection].forEach((element) => {
+        if (!element.isEqualNode(nodeEl)) element.classList.remove(className);
+      });
+    }
+
+    function allElementEnabled(HTMLCollection, className) {
+      [...HTMLCollection].forEach((element) => {
+        element.classList.add(className);
+      });
+    }
+
+    function toggleClassName(element, className) {
+      element.classList.toggle(className);
+    }
+  </script>
+</html>
