@@ -55,13 +55,30 @@ P.S. This logic should be similar to windows folder select P.P.S. Continue work 
   </body>
   <script>
     const elemUl = document.getElementById("myUl");
+    const listOfLi = [...elemUl.children];
+    let prev;
+    let last;
+    console.log(listOfLi);
+
     elemUl.addEventListener("click", (event) => {
       console.log(event);
-      let prevSelected = lastSelected;
-      let lastSelected = event.target;
+
+      prev = last;
+      last = event.target;
 
       if (event.ctrlKey) {
         toggleClassName(event.target, "active");
+      } else if (event.shiftKey) {
+        let shiftedList;
+        const prevIndex = listOfLi.findIndex((item) => item === prev);
+        const lastIndex = listOfLi.findIndex((item) => item === last);
+        if (prevIndex > lastIndex) {
+          shiftedList = listOfLi.slice(lastIndex, prevIndex + 1);
+        } else {
+          shiftedList = listOfLi.slice(prevIndex, lastIndex + 1);
+        }
+
+        shiftedList && allElementEnabled(shiftedList, "active");
       } else {
         allElementDisable(
           event.target.parentElement.children,
@@ -75,6 +92,12 @@ P.S. This logic should be similar to windows folder select P.P.S. Continue work 
     function allElementDisable(HTMLCollection, className, nodeEl) {
       [...HTMLCollection].forEach((element) => {
         if (!element.isEqualNode(nodeEl)) element.classList.remove(className);
+      });
+    }
+
+    function allElementEnabled(HTMLCollection, className) {
+      [...HTMLCollection].forEach((element) => {
+        element.classList.add(className);
       });
     }
 
